@@ -1,10 +1,60 @@
 from certhasher import app
 from flask import render_template, make_response, url_for, send_file, abort, flash, request, redirect
 
+def keyHash(params):
+    params = ['name', str(params[0]), 'role', str(params[1]), 'type', str(params[2])]
 
-@app.route('/hash/verify/<name>', methods=['GET'])
-def index(name):
+    if len(params) % 2 != 0:
+
+        import random
+
+        return ("ERROR: odd number of arguments (" +
+        len(params) +
+        ") [" +
+        random.random() +
+        "]")
+
+    def hashParam(inp):
+        inp = str(inp)
+        
+        output = 0
+
+        if len(inp) != 0:
+            for i in range(len(inp)):
+                char = ord(inp[i])
+                
+                output = (output << 5) - output + char
+                # print(output)
+                output = (output & output)
+                # print(output)
+        return output
+
+    correctHash = 0
+    for i in range(0, len(params), 2):
+
+        correctHash += int(hashParam(params[i] + "|" + params[i + 1])) / len(params)
+
+    correctHash = hashParam(correctHash)
+    return correctHash
+
+@app.route('/hash/verify', methods=['GET'])
+def hash():
     '''
     Hash here
     '''
-    return True
+    name = request.args['name']
+    role = request.args['role']
+    typ = request.args['type']
+
+    return keyHash([name, role, typ])
+
+@app.route('/hash/encode', methods=['GET'])
+def encode():
+	'''
+	Encode here
+	'''
+	name = request.args['name']
+    role = request.args['role']
+    typ = request.args['type']
+
+    return keyHash([name, role, typ])
