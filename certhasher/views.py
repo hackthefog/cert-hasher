@@ -50,10 +50,10 @@ def hash():
 
 @app.route('/hash/encode', methods=['GET'])
 def encode():
-	'''
-	Encode here
-	'''
-	name = request.args['name']
+    '''
+    Hash here
+    '''
+    name = request.args['name']
     role = request.args['role']
     typ = request.args['type']
 
