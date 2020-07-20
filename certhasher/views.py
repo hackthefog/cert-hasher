@@ -58,3 +58,18 @@ def encode():
     typ = request.args['type']
 
     return keyHash([name, role, typ])
+
+@app.route('/generate', methods=['GET'])
+def generate():
+    '''
+    Generate link
+    '''
+    name = request.args['name']
+    role = request.args['role']
+    typ = request.args['type']
+
+    key = keyHash([name, role, typ])
+
+    url = f"https://certificate.hackthefog.com?name={name}&role={role}&type={typ}&key={key}"
+
+    return url
