@@ -46,7 +46,7 @@ def hash():
     role = request.args['role']
     typ = request.args['type']
 
-    return keyHash([name, role, typ])
+    return str(keyHash([name, role, typ]))
 
 @app.route('/hash/encode', methods=['GET'])
 def encode():
@@ -57,7 +57,7 @@ def encode():
     role = request.args['role']
     typ = request.args['type']
 
-    return keyHash([name, role, typ])
+    return str(keyHash([name, role, typ]))
 
 @app.route('/generate', methods=['GET'])
 def generate():
