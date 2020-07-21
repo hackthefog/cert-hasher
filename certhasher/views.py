@@ -1,6 +1,5 @@
 from certhasher import app
 from flask import render_template, make_response, url_for, send_file, abort, flash, request, redirect
-import json
 
 def keyHash(params):
     params = ['name', str(params[0]), 'role', str(params[1]), 'type', str(params[2])]
@@ -47,7 +46,7 @@ def hash():
     role = request.args['role']
     typ = request.args['type']
 
-    return json(keyHash([name, role, typ]))
+    return keyHash([name, role, typ])
 
 @app.route('/hash/encode', methods=['GET'])
 def encode():
@@ -58,7 +57,7 @@ def encode():
     role = request.args['role']
     typ = request.args['type']
 
-    return json(keyHash([name, role, typ]))
+    return keyHash([name, role, typ])
 
 @app.route('/generate', methods=['GET'])
 def generate():
