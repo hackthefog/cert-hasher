@@ -1,6 +1,7 @@
 from certhasher import app
 from flask import render_template, make_response, url_for, send_file, abort, flash, request, redirect
 import numpy as np
+import os
 
 def keyHash(params):
     params = ['name', str(params[0]), 'role', str(params[1]), 'type', str(params[2])]
@@ -45,7 +46,7 @@ def hash():
     '''
     name = request.args['name']
     role = request.args['role']
-    typ = request.args['type']
+    typ = request.args['type'] + os.environ['SALT']
 
     return str(keyHash([name, role, typ]))
 
@@ -56,7 +57,7 @@ def encode():
     '''
     name = request.args['name']
     role = request.args['role']
-    typ = request.args['type']
+    typ = request.args['type'] + os.environ['SALT']
 
     return str(keyHash([name, role, typ]))
 
@@ -67,7 +68,7 @@ def generate():
     '''
     name = request.args['name']
     role = request.args['role']
-    typ = request.args['type']
+    typ = request.args['type'] + os.environ['SALT']
 
     key = keyHash([name, role, typ])
 
