@@ -3,18 +3,8 @@ from flask import render_template, make_response, url_for, send_file, abort, fla
 import numpy as np
 import os
 
-def keyHash(params):
-    params = ['name', str(params[0]), 'role', str(params[1]), 'type', str(params[2])]
-
-    if len(params) % 2 != 0:
-
-        import random
-
-        return ("ERROR: odd number of arguments (" +
-        len(params) +
-        ") [" +
-        random.random() +
-        "]")
+def keyHash(name, role, typ):
+    params = ['name', name, 'role', role, 'type', typ]
 
     def hashParam(inp):
         inp = str(inp)
@@ -25,7 +15,7 @@ def keyHash(params):
             for i in range(len(inp)):
                 char = ord(inp[i])
                 
-                output = np.int32(output << 5) - output + char
+                output = np.int32((output << 5) - output + char)
                 # print(output)
                 output = (output & output)
                 # print(output)
@@ -46,10 +36,9 @@ def hash():
     '''
     name = request.args['name']
     role = request.args['role']
-    print(os.environ['SALT'])
     typ = request.args['type'] + os.environ['SALT']
 
-    return str(keyHash([name, role, typ]))
+    return str(keyHash(name, role, typ))
 
 @app.route('/hash/encode', methods=['GET'])
 def encode():
@@ -60,7 +49,7 @@ def encode():
     role = request.args['role']
     typ = request.args['type'] + os.environ['SALT']
 
-    return str(keyHash([name, role, typ]))
+    return str(keyHash(name, role, typ))
 
 @app.route('/generate', methods=['GET'])
 def generate():
@@ -71,7 +60,7 @@ def generate():
     role = request.args['role']
     typ = request.args['type'] + os.environ['SALT']
 
-    key = keyHash([name, role, typ])
+    key = keyHash(name, role, typ)
 
     url = f"https://certificate.hackthefog.com?name={name}&role={role}&type={typ}&key={key}"
 
