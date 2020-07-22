@@ -65,3 +65,8 @@ def generate():
     url = f"https://certificate.hackthefog.com?name={name}&role={role}&type={typ}&key={key}"
 
     return url
+
+@app.route('/debug-sentry')
+def trigger_error():
+    division_by_zero = 1 / 0
+    
