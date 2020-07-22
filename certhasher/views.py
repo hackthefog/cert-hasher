@@ -46,6 +46,7 @@ def hash():
     '''
     name = request.args['name']
     role = request.args['role']
+    print(os.environ['SALT'])
     typ = request.args['type'] + os.environ['SALT']
 
     return str(keyHash([name, role, typ]))
