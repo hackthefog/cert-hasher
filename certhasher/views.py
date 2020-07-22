@@ -58,9 +58,9 @@ def generate():
     '''
     name = request.args['name']
     role = request.args['role']
-    typ = request.args['type'] + os.environ['SALT']
+    typ = request.args['type']
 
-    key = keyHash(name, role, typ)
+    key = keyHash(name, role, typ + os.environ['SALT'])
 
     url = f"https://certificate.hackthefog.com?name={name}&role={role}&type={typ}&key={key}"
 
@@ -69,4 +69,3 @@ def generate():
 @app.route('/debug-sentry')
 def trigger_error():
     division_by_zero = 1 / 0
-    
