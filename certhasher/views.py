@@ -1,5 +1,6 @@
 from certhasher import app
 from flask import render_template, make_response, url_for, send_file, abort, flash, request, redirect
+import numpy as np
 
 def keyHash(params):
     params = ['name', str(params[0]), 'role', str(params[1]), 'type', str(params[2])]
@@ -23,7 +24,7 @@ def keyHash(params):
             for i in range(len(inp)):
                 char = ord(inp[i])
                 
-                output = (output << 5) - output + char
+                output = np.int32(output << 5) - output + char
                 # print(output)
                 output = (output & output)
                 # print(output)
